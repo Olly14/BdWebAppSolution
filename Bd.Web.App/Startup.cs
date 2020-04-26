@@ -49,7 +49,7 @@ namespace Bd.Web.App
             services.AddSingleton(mapper);
 
             services.AddScoped<IApiClient, ApiClient>();
-            services.AddScoped<IOrderItemBasket, OrderItemBasket>();
+            services.AddSingleton<IOrderItemBasket, OrderItemBasket>();
 
 
 

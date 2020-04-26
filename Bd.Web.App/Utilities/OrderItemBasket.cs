@@ -13,8 +13,7 @@ namespace Bd.Web.App.Utilities
 
         public OrderItemBasket()
         {
-            _orderItems = new List<OrderItemViewModel>();
-            OrderItems = _orderItems;
+            OrderItems = new List<OrderItemViewModel>();
         }
 
         public List<OrderItemViewModel> OrderItems { get ; set; }

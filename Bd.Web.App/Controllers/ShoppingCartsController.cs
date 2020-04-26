@@ -32,7 +32,7 @@ namespace Bd.Web.App.Controllers
 
         private readonly string GendersList_Base_Address = "Prices/GetGenders";
 
-        private readonly string SinglePriceByType_Base_Address = "Prices/GetPriceByType";
+        private readonly string SinglePriceByType_Base_Address = "Prices/GetPricesByType";
 
 
         private readonly IMapper _mapper;
@@ -78,7 +78,7 @@ namespace Bd.Web.App.Controllers
             product.Type = type;
             product.Price = price.Price;
 
-            await Task.Run(() =>
+            var oi = await Task.Run(() =>
             {
                 var orderItem = new OrderItemViewModel()
                 {
@@ -91,8 +91,11 @@ namespace Bd.Web.App.Controllers
                 };
                 orderItem.TotalQuantityPrice = orderItem.Quantity * product.Price;
                 orderItem.Product = product;
-                _orderItemBasket.OrderItems.Add(orderItem);
+                return orderItem;
+                //_orderItemBasket.OrderItems.Add(orderItem);
             });
+
+            _orderItemBasket.OrderItems.Add(oi);
 
 
             return RedirectToAction(nameof(ListOfBasketItems));
@@ -102,7 +105,8 @@ namespace Bd.Web.App.Controllers
         [HttpGet]
         public IActionResult ListOfBasketItems()
         {
-            return View(_orderItemBasket.OrderItems);
+            var orderItems = _orderItemBasket.OrderItems;
+            return View(orderItems);
         }
 
         [HttpGet]
@@ -131,14 +135,12 @@ namespace Bd.Web.App.Controllers
         {
             var orderItems = _orderItemBasket.OrderItems;
             var orderItem = orderItems
-                .FirstOrDefault(o => o
-                .ProductId == GuidEncoder.Decode(id)
-                .ToString() && o
-                .ProductType == type);
+                .FirstOrDefault(o => string.Compare(o.ProductId, GuidEncoder.Decode(id).ToString(), true) == 0);
 
             if (orderItems.Count >= 1)
             {
                 orderItem.Quantity -= 1;
+                orderItem.TotalQuantityPrice = orderItem.Quantity * orderItem.Product.Price;
             }
 
             return RedirectToAction(nameof(ListOfBasketItems));
