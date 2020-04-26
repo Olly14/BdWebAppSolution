@@ -14,7 +14,7 @@ namespace Bd.Web.App.HttpService
             {
                 return new HttpClient
                 {
-                    BaseAddress = new Uri("http://localhost:5000/api/")
+                    BaseAddress = new Uri("https://localhost:44301/api/")
                     //BaseAddress = new Uri("http://192.168.1.25:5000/api/")
                 };
             }

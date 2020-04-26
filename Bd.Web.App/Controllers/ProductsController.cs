@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
+using Bd.Web.App.DtoModels;
 using Bd.Web.App.HttpService;
+using Bd.Web.App.Masking;
 using Bd.Web.App.Models;
 using Bd.Web.App.WebApiClient;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -32,20 +35,27 @@ namespace Bd.Web.App.Controllers
         [HttpGet]
         public async Task<ActionResult> Index()
         {
-            var path = string.Format("{0}{1}", HttpClientProvider.HttpClient.BaseAddress, ProductsList_Base_Address);
+            var path = string.Format("{0}{1}", HttpClientProvider.HttpClient.BaseAddress, Products_Base_Address);
             var response = new List<ProductViewModel>();
             using (var client = HttpClientProvider.HttpClient)
             {
                 response = (await _appClient.ListAsync<ProductViewModel>(path)).ToList();
-                return View(response);
             }
+            response = (await PopulateUriKeyAsync(response)).ToList(); 
+            return View(response);
 
         }
 
+
         // GET: Products/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Details(string id)
         {
-            return View();
+            var path = string.Format("{0}{1}/{2}",
+                HttpClientProvider.HttpClient.BaseAddress, Products_Base_Address,
+                GuidEncoder.Decode(id));
+            var product = _mapper.Map<ProductViewModel>(_appClient.GetAsync<ProductDto>(path));
+            product.UriKey = GuidEncoder.Encode(product.ProductId);
+            return View(product);
         }
 
         // GET: Products/Create
@@ -71,20 +81,31 @@ namespace Bd.Web.App.Controllers
             }
         }
 
+
+        [HttpGet]
         // GET: Products/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> EditAsync(string id)
         {
-            return View();
+            var path = string.Format("{0}/{1}", Products_Base_Address,
+                GuidEncoder.Decode(id));
+            var product = _mapper.Map<ProductViewModel>(await _appClient.GetAsync<ProductDto>(path));
+            product.UriKey = GuidEncoder.Encode(product.ProductId);
+            product.UiControl = "Create";
+            return View("CreateEdit", product);
         }
 
         // POST: Products/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(ProductViewModel model)
         {
             try
             {
                 // TODO: Add update logic here
+                if (ModelState.IsValid)
+                {
+
+                }
 
                 return RedirectToAction(nameof(Index));
             }
@@ -115,6 +136,20 @@ namespace Bd.Web.App.Controllers
             {
                 return View();
             }
+        }
+
+
+
+        private async Task<IEnumerable<ProductViewModel>> PopulateUriKeyAsync(List<ProductViewModel> products)
+        {
+            return await Task.Run(() =>
+            {
+                return products.Select(p =>
+                {
+                    p.UriKey = GuidEncoder.Encode(p.ProductId);
+                    return p;
+                });
+            });
         }
     }
 }

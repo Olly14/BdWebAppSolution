@@ -1,0 +1,39 @@
+﻿@model IEnumerable<Bd.Web.App.Models.ProductViewModel>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Shopping Cart";
+}
+
+<h2>Shooping Cart</h2>
+
+<div class="container">
+    <div class="row py-5">
+        <div class="col-md-3 col-sm-6 my-3 my-md-0">
+            @{
+                foreach (var item in Model)
+                {
+                    @Html.Hidden("UriKey")
+                    @Html.Hidden("Type")
+                    @Html.Hidden("Name")
+                    <div class="glyphicon-credit-card">
+                        <div>
+                            <img src="/" alt="Image @item.Type" class="img-fluid glyphicon-credit-card" />
+                        </div>
+                    </div>
+                    <div class="glyphicon-credit-card">
+                        <h5>
+                            <small class="price text-secondary">@item.Price</small>
+                            <span class="price text-secondary">£ @item.Price</span>
+                        </h5>
+                        <a asp-action="AddItem" asp-route-id="@item.UriKey" , asp-route-type="@item.Type" class="btn btn-primary"> Add Item To Basket</a>
+                    </div>
+                }
+            }
+        </div>
+
+    </div>
+</div>
+

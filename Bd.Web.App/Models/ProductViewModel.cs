@@ -27,6 +27,7 @@ namespace Bd.Web.App.Models
 
         public string Type { get; set; }
 
+
         public string XXSmallType { get; set; }
 
         public string XSmallType { get; set; }
@@ -46,8 +47,13 @@ namespace Bd.Web.App.Models
         public string LargeType { get; set; }
 
         public string XXXType { get; set; }
+
         public string UriKey { get; set; }
+
+        public string UiControl { get; set; }
+
         public List<PricesViewModel> Prices { get; set; }
+
         public virtual List<OrderItemViewModel> OrderItems { get; set; }
 
     }

@@ -120,3 +120,8 @@ C:\Users\Olayinka.Ayoola\source\repos\BdWebAppSolution\Bd.Web.App\bin\Debug\netc
 C:\Users\Olayinka.Ayoola\source\repos\BdWebAppSolution\Bd.Web.App\bin\Debug\netcoreapp3.1\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
 C:\Users\Olayinka.Ayoola\source\repos\BdWebAppSolution\Bd.Web.App\bin\Debug\netcoreapp3.1\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
 C:\Users\Olayinka.Ayoola\source\repos\BdWebAppSolution\Bd.Web.App\bin\Debug\netcoreapp3.1\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\Olayinka.Ayoola\source\repos\BdWebAppSolution\Bd.Web.App\obj\Debug\netcoreapp3.1\Razor\Views\Products\Index.cshtml.g.cs
+C:\Users\Olayinka.Ayoola\source\repos\BdWebAppSolution\Bd.Web.App\obj\Debug\netcoreapp3.1\Razor\Views\ShoppingCarts\ConfirmOrder.cshtml.g.cs
+C:\Users\Olayinka.Ayoola\source\repos\BdWebAppSolution\Bd.Web.App\obj\Debug\netcoreapp3.1\Razor\Views\ShoppingCarts\Index.cshtml.g.cs
+C:\Users\Olayinka.Ayoola\source\repos\BdWebAppSolution\Bd.Web.App\obj\Debug\netcoreapp3.1\Razor\Views\ShoppingCarts\ListOfBasketItems.cshtml.g.cs
+C:\Users\Olayinka.Ayoola\source\repos\BdWebAppSolution\Bd.Web.App\obj\Debug\netcoreapp3.1\Razor\Views\Products\CreateEdit.cshtml.g.cs

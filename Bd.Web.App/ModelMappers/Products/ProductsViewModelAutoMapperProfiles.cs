@@ -10,6 +10,7 @@ namespace Bd.Web.App.ModelMappers.Products
         {
             CreateMap<ProductDto, ProductViewModel>().ReverseMap();
             CreateMap<ProductViewModel, ProductViewModel>().ReverseMap();
+            CreateMap<PricesDto, PricesViewModel>().ReverseMap();
         }
     }
 }

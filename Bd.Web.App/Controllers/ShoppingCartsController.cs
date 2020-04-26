@@ -14,9 +14,9 @@ using System.Threading.Tasks;
 
 namespace Bd.Web.App.Controllers
 {
-    public class ShoppingCartControllerController : Controller
+    public class ShoppingCartsController : Controller
     {
-        private readonly string Products_Base_Address = "Product";
+        private readonly string Products_Base_Address = "Products";
 
         private readonly string Orders_Base_Address = "Orders";
 
@@ -39,7 +39,7 @@ namespace Bd.Web.App.Controllers
         private readonly IApiClient _apiClient;
         private readonly IOrderItemBasket _orderItemBasket;
 
-        public ShoppingCartControllerController(IMapper mapper, IApiClient apiClient, IOrderItemBasket orderItemBasket)
+        public ShoppingCartsController(IMapper mapper, IApiClient apiClient, IOrderItemBasket orderItemBasket)
         {
             _mapper = mapper;
             _apiClient = apiClient;
@@ -51,9 +51,8 @@ namespace Bd.Web.App.Controllers
         [HttpGet]
         public async Task<IActionResult> Index(string id)
         {
-            var path = string.Format("{0}{1}/{2}",
-                            HttpClientProvider.HttpClient.BaseAddress,
-                            OneProduct_Base_Address, GuidEncoder.Decode(id));
+            var path = string.Format("{0}/{1}", Products_Base_Address,
+                            GuidEncoder.Decode(id));
             var product = PopulateUriKey(
                             _mapper.Map<ProductViewModel>(
                                 await _apiClient.GetAsync<ProductDto>(path)));
@@ -66,17 +65,14 @@ namespace Bd.Web.App.Controllers
         [HttpGet]
         public async Task<IActionResult> AddItem(string id, string type)
         {
-            var path = string.Format("{0}{1}/{2}",
-                        HttpClientProvider.HttpClient.BaseAddress,
-                        OneProduct_Base_Address, GuidEncoder.Decode(id));
+            var path = string.Format("{0}/{1}", Products_Base_Address,
+                            GuidEncoder.Decode(id));
             var product = PopulateUriKey(
                 _mapper.Map<ProductViewModel>(
                     await _apiClient.GetAsync<ProductDto>(path)));
-            var pricePath = string.Format("{0}{1}/{2}",
-                        HttpClientProvider.HttpClient.BaseAddress,
-                        SinglePriceByType_Base_Address, type);
+            var pricePath = string.Format("{0}/{1}", SinglePriceByType_Base_Address, type);
             var price = _mapper.Map<PricesViewModel>(
-                    await _apiClient.GetAsync<PricesDto>(path));
+                    await _apiClient.GetAsync<PricesDto>(pricePath));
 
             product.Prices.Add(price);
             product.Type = type;
@@ -131,7 +127,7 @@ namespace Bd.Web.App.Controllers
         }
 
         [HttpGet]
-        public IActionResult RemoveSameItemOnceToBasket(string id, string type)
+        public IActionResult RemoveSameItemOnceFromBasket(string id, string type)
         {
             var orderItems = _orderItemBasket.OrderItems;
             var orderItem = orderItems
@@ -244,23 +240,25 @@ namespace Bd.Web.App.Controllers
         {
             var path = string.Format("{0}{1}",
                         HttpClientProvider.HttpClient.BaseAddress, PricesList_Base_Address);
-            return _mapper.Map<IEnumerable<PricesViewModel>>(
+           var result = _mapper.Map<IEnumerable<PricesViewModel>>(
                     await _apiClient.ListAsync<PricesDto>(path));
+            return result;
         }
 
         private async Task<ProductViewModel> PopulatePricesAsync(ProductViewModel product)
         {
-            var prices = (await GetPricesAsync()).ToList();
-            product.Prices = prices.Where(p => p.ProductId == product.ProductId)
-                                    .ToList();
+            product.Prices = (await GetPricesAsync()).ToList();
             return product;
         }
 
         private async Task<List<ProductViewModel>> PopulateAndCreateTypesAsync(ProductViewModel product)
         {
+            var products = new List<ProductViewModel>();
+            product = await PopulatePricesAsync(product);
             return await Task.Run(() =>
             {
-                return PopulateAndCreateTypes(product);
+                products =  PopulateAndCreateTypes(product);
+                return products;
             });
         }
 
