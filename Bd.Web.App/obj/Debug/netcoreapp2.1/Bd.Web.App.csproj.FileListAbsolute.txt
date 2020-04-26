@@ -1,13 +1,4 @@
-C:\Users\Olayinka.Ayoola\source\repos\BdWebAppSolution\Bd.Web.App\bin\Debug\netcoreapp2.1\appsettings.Development.json
-C:\Users\Olayinka.Ayoola\source\repos\BdWebAppSolution\Bd.Web.App\bin\Debug\netcoreapp2.1\appsettings.json
-C:\Users\Olayinka.Ayoola\source\repos\BdWebAppSolution\Bd.Web.App\bin\Debug\netcoreapp2.1\Properties\launchSettings.json
-C:\Users\Olayinka.Ayoola\source\repos\BdWebAppSolution\Bd.Web.App\bin\Debug\netcoreapp2.1\Bd.Web.App.deps.json
-C:\Users\Olayinka.Ayoola\source\repos\BdWebAppSolution\Bd.Web.App\bin\Debug\netcoreapp2.1\Bd.Web.App.runtimeconfig.json
-C:\Users\Olayinka.Ayoola\source\repos\BdWebAppSolution\Bd.Web.App\bin\Debug\netcoreapp2.1\Bd.Web.App.runtimeconfig.dev.json
-C:\Users\Olayinka.Ayoola\source\repos\BdWebAppSolution\Bd.Web.App\bin\Debug\netcoreapp2.1\Bd.Web.App.dll
-C:\Users\Olayinka.Ayoola\source\repos\BdWebAppSolution\Bd.Web.App\bin\Debug\netcoreapp2.1\Bd.Web.App.pdb
-C:\Users\Olayinka.Ayoola\source\repos\BdWebAppSolution\Bd.Web.App\bin\Debug\netcoreapp2.1\Bd.Web.App.Views.dll
-C:\Users\Olayinka.Ayoola\source\repos\BdWebAppSolution\Bd.Web.App\bin\Debug\netcoreapp2.1\Bd.Web.App.Views.pdb
+C:\Users\Olayinka.Ayoola\source\repos\BdWebAppSolution\Bd.Web.App\obj\Debug\netcoreapp2.1\Bd.Web.App.csprojAssemblyReference.cache
 C:\Users\Olayinka.Ayoola\source\repos\BdWebAppSolution\Bd.Web.App\obj\Debug\netcoreapp2.1\Bd.Web.App.csproj.CoreCompileInputs.cache
 C:\Users\Olayinka.Ayoola\source\repos\BdWebAppSolution\Bd.Web.App\obj\Debug\netcoreapp2.1\Bd.Web.App.RazorAssemblyInfo.cache
 C:\Users\Olayinka.Ayoola\source\repos\BdWebAppSolution\Bd.Web.App\obj\Debug\netcoreapp2.1\Bd.Web.App.RazorAssemblyInfo.cs
@@ -20,6 +11,7 @@ C:\Users\Olayinka.Ayoola\source\repos\BdWebAppSolution\Bd.Web.App\obj\Debug\netc
 C:\Users\Olayinka.Ayoola\source\repos\BdWebAppSolution\Bd.Web.App\obj\Debug\netcoreapp2.1\Razor\Views\Home\Contact.cshtml.g.cs
 C:\Users\Olayinka.Ayoola\source\repos\BdWebAppSolution\Bd.Web.App\obj\Debug\netcoreapp2.1\Razor\Views\Home\Index.cshtml.g.cs
 C:\Users\Olayinka.Ayoola\source\repos\BdWebAppSolution\Bd.Web.App\obj\Debug\netcoreapp2.1\Razor\Views\Home\Privacy.cshtml.g.cs
+C:\Users\Olayinka.Ayoola\source\repos\BdWebAppSolution\Bd.Web.App\obj\Debug\netcoreapp2.1\Razor\Views\Orders\GetOrdersAsync.cshtml.g.cs
 C:\Users\Olayinka.Ayoola\source\repos\BdWebAppSolution\Bd.Web.App\obj\Debug\netcoreapp2.1\Razor\Views\Products\Index.cshtml.g.cs
 C:\Users\Olayinka.Ayoola\source\repos\BdWebAppSolution\Bd.Web.App\obj\Debug\netcoreapp2.1\Razor\Views\Shared\Error.cshtml.g.cs
 C:\Users\Olayinka.Ayoola\source\repos\BdWebAppSolution\Bd.Web.App\obj\Debug\netcoreapp2.1\Razor\Views\Shared\_CookieConsentPartial.cshtml.g.cs
@@ -29,8 +21,6 @@ C:\Users\Olayinka.Ayoola\source\repos\BdWebAppSolution\Bd.Web.App\obj\Debug\netc
 C:\Users\Olayinka.Ayoola\source\repos\BdWebAppSolution\Bd.Web.App\obj\Debug\netcoreapp2.1\Razor\Views\_ViewStart.cshtml.g.cs
 C:\Users\Olayinka.Ayoola\source\repos\BdWebAppSolution\Bd.Web.App\obj\Debug\netcoreapp2.1\Bd.Web.App.RazorTargetAssemblyInfo.cache
 C:\Users\Olayinka.Ayoola\source\repos\BdWebAppSolution\Bd.Web.App\obj\Debug\netcoreapp2.1\Bd.Web.App.RazorTargetAssemblyInfo.cs
-C:\Users\Olayinka.Ayoola\source\repos\BdWebAppSolution\Bd.Web.App\obj\Debug\netcoreapp2.1\Bd.Web.App.Views.pdb
 C:\Users\Olayinka.Ayoola\source\repos\BdWebAppSolution\Bd.Web.App\obj\Debug\netcoreapp2.1\Bd.Web.App.dll
 C:\Users\Olayinka.Ayoola\source\repos\BdWebAppSolution\Bd.Web.App\obj\Debug\netcoreapp2.1\Bd.Web.App.pdb
-C:\Users\Olayinka.Ayoola\source\repos\BdWebAppSolution\Bd.Web.App\obj\Debug\netcoreapp2.1\Bd.Web.App.genruntimeconfig.cache
-C:\Users\Olayinka.Ayoola\source\repos\BdWebAppSolution\Bd.Web.App\obj\Debug\netcoreapp2.1\Bd.Web.App.csproj.CopyComplete
+C:\Users\Olayinka.Ayoola\source\repos\BdWebAppSolution\Bd.Web.App\obj\Debug\netcoreapp2.1\Razor\Views\Shared\_ViewImports.cshtml.g.cs

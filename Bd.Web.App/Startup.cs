@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿
 using AutoMapper;
 using Bd.Web.App.ModelMappers.AppUser;
 using Bd.Web.App.ModelMappers.Products;
+using Bd.Web.App.Utilities;
 using Bd.Web.App.WebApiClient;
 using Bd.Web.App.WebApiClients;
 using Microsoft.AspNetCore.Builder;
@@ -36,7 +34,7 @@ namespace Bd.Web.App
             });
 
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc(options => { options.EnableEndpointRouting = false; }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             var mappingConfig = new MapperConfiguration(mc =>
             {
@@ -50,7 +48,8 @@ namespace Bd.Web.App
             IMapper mapper = mappingConfig.CreateMapper();
             services.AddSingleton(mapper);
 
-            services.AddScoped<IApiClient, CustomApiClient>();
+            services.AddScoped<IApiClient, ApiClient>();
+            services.AddScoped<IOrderItemBasket, OrderItemBasket>();
 
 
 

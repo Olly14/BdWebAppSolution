@@ -1,0 +1,15 @@
+﻿@model Bd.Web.App.Models.OrderViewModel;
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers;
+
+@{
+    ViewData["Title"] = "Confirm Order";
+}
+
+<h2>Confirm Order</h2>
+<hr />
+<h4> The order: @Model.OrderId, Amount: @Model.TotalPrice</h4>
+<h4> was placed successfully!</h4>
+
+<a asp-action="Index" asp-controller="Products">Back To Products</a>
+

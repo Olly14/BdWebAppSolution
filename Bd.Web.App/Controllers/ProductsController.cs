@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Bd.web.App.ViewModels;
 using Bd.Web.App.HttpService;
 using Bd.Web.App.Models;
 using Bd.Web.App.WebApiClient;
@@ -34,10 +33,10 @@ namespace Bd.Web.App.Controllers
         public async Task<ActionResult> Index()
         {
             var path = string.Format("{0}{1}", HttpClientProvider.HttpClient.BaseAddress, ProductsList_Base_Address);
-            var response = new List<ProductModel>();
+            var response = new List<ProductViewModel>();
             using (var client = HttpClientProvider.HttpClient)
             {
-                response = (await _appClient.ListAsync<ProductModel>(path)).ToList();
+                response = (await _appClient.ListAsync<ProductViewModel>(path)).ToList();
                 return View(response);
             }
 

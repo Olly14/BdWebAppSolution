@@ -8,7 +8,8 @@ namespace Bd.Web.App.ModelMappers.Products
     {
         public ProductsViewModelAutoMapperProfiles()
         {
-            CreateMap<ProductDto, ProductModel>().ReverseMap();
+            CreateMap<ProductDto, ProductViewModel>().ReverseMap();
+            CreateMap<ProductViewModel, ProductViewModel>().ReverseMap();
         }
     }
 }

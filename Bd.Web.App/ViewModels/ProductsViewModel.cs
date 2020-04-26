@@ -1,19 +1,18 @@
-﻿using Bd.Web.App.Models;
-using Bd.Web.App.ViewModels;
-using System.Collections.ObjectModel;
+﻿//using Bd.Web.App.Models;
+//using Bd.Web.App.ViewModels;
 
 
-namespace Bd.web.App.ViewModels
-{
-    public class ProductsViewModel : BaseViewModel
-    {
+//namespace Bd.web.App.ViewModels
+//{
+//    public class ProductsViewModel : BaseViewModel
+//    {
 
-        public ProductsViewModel()
-        {
-            Products = new ObservableCollection<ProductModel>();
+//        public ProductsViewModel()
+//        {
+//            Products = new ObservableCollection<ProductViewModel>();
           
-        }
+//        }
 
-        public ObservableCollection<ProductModel> Products { get; set; }
-    }
-}
+//        public ObservableCollection<ProductViewModel> Products { get; set; }
+//    }
+//}
