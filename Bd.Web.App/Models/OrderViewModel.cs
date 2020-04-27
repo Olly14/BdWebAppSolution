@@ -5,6 +5,12 @@ namespace Bd.Web.App.Models
 {
     public class OrderViewModel
     {
+
+        public OrderViewModel()
+        {
+            OrderItems = new List<OrderItemViewModel>();
+            OrderProducts = new List<OrderProductViewModel>();
+        }
         public string OrderId { get; set; }
 
         public string AppUserId { get; set; }
@@ -16,6 +22,8 @@ namespace Bd.Web.App.Models
         public double TotalPrice { get; set; }
 
         public virtual List<OrderItemViewModel> OrderItems { get; set; }
+
+        public virtual List<OrderProductViewModel> OrderProducts { get; set; }
         public AppUserModel AppUser { get; set; }
 
 

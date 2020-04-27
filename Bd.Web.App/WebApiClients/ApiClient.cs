@@ -115,11 +115,11 @@ namespace Bd.Web.App.WebApiClients
                 };
            // message.Headers.Authorization = new AuthenticationHeaderValue("Bearer", await GetAccessTokenAsync());
 
-            var responseA = _httpClient.SendAsync(message);
+            var responseA = await _httpClient.SendAsync(message);
 
-            if (responseA != null && responseA.IsCompletedSuccessfully)
+            if (responseA != null && responseA.IsSuccessStatusCode)
             {
-                var jsonString = await responseA.Result.Content.ReadAsStringAsync();
+                var jsonString = await responseA.Content.ReadAsStringAsync();
                 var result = JsonConvert.DeserializeObject<T>(jsonString);
                 return result;
             }

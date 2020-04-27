@@ -19,10 +19,15 @@ namespace Bd.Web.App.Models
         public OrderViewModel Order { get; set; }
 
         public ProductViewModel Product { get; set; }
-        public double TotalQuantityPrice { get; internal set; }
+
+        public double TotalQuantityPrice { get; set; }
+
         public string ProductName { get; internal set; }
+
         public string ProductType { get; internal set; }
+
         public string ProductDescription { get; internal set; }
+
         public string UriKey { get; internal set; }
     }
 }

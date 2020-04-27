@@ -151,10 +151,10 @@ namespace Bd.Web.App.Controllers
             var orderItems = _orderItemBasket.OrderItems;
             var order = await CreateOrderAsync(orderItems);
             var path = string.Format("{0}{1}",
-                HttpClientProvider.HttpClient.BaseAddress, ConfirmOrder_Base_Address);
+                HttpClientProvider.HttpClient.BaseAddress, Orders_Base_Address);
             var orderPostResult = await _apiClient.PostAsync(path, _mapper.Map<OrderDto>(order));
-            
-            return View(orderPostResult);
+            var confirmedOrder = _mapper.Map<OrderViewModel>(orderPostResult);
+            return View(confirmedOrder);
         }
 
         // GET: ShoppingCartController/Details/5
@@ -437,7 +437,7 @@ namespace Bd.Web.App.Controllers
                 OrderId = Guid.NewGuid().ToString(),
                 CreatedDate = DateTime.UtcNow,
                 //Todo: Needs The Identity.User
-                AppUserId = "",
+                AppUserId = "16DC732D-F6D0-4D1B-B166-3E0451E93DCA",
                 Status = "InProcess"
             };
             if (orderItems.Count() >= 1)
@@ -446,13 +446,19 @@ namespace Bd.Web.App.Controllers
                 {
                     var orderItem = new OrderItemViewModel() 
                     {
-                        ProductId = item.ProductId,
-                        OrderId = item.OrderId,
+                        OrderId = newOrder.OrderId,
+                        Quantity = item.Quantity,
                         TotalQuantityPrice = item.TotalQuantityPrice,
-                        Product = item.Product
+                        Order = newOrder
+                    };
+                    var orderProduct = new OrderProductViewModel()
+                    {
+                        OrderId = newOrder.OrderId,
+                        ProductId = item.ProductId,
                     };
                     newOrder.TotalPrice += orderItem.TotalQuantityPrice;
-                    newOrder.OrderItems.Add(item);
+                    newOrder.OrderItems.Add(orderItem);
+                    newOrder.OrderProducts.Add(orderProduct);
                 }
             }
             return newOrder;

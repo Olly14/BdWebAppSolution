@@ -9,10 +9,12 @@ namespace Bd.Web.App.Models
     {
         public string PriceId { get; set; }
 
-        public string ProductId { get; set; }
+        public string PricesId { get; set; }
 
         public string Type { get; set; }
 
         public double Price { get; set; }
+
+        public string UriKey { get; set; }
     }
 }

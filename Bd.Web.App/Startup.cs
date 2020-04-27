@@ -1,6 +1,7 @@
 ﻿
 using AutoMapper;
 using Bd.Web.App.ModelMappers.AppUser;
+using Bd.Web.App.ModelMappers.Order;
 using Bd.Web.App.ModelMappers.Products;
 using Bd.Web.App.Utilities;
 using Bd.Web.App.WebApiClient;
@@ -11,6 +12,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 
 namespace Bd.Web.App
 {
@@ -32,15 +34,21 @@ namespace Bd.Web.App
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
-
+            
 
             services.AddMvc(options => { options.EnableEndpointRouting = false; }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            JsonConvert.DefaultSettings = () => new JsonSerializerSettings
+            {
+                Formatting = Formatting.Indented,
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            }; 
+
 
             var mappingConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new ProductsViewModelAutoMapperProfiles());
                 mc.AddProfile(new AppUserViewModelAutoMapperProfiles());
-                //mc.AddProfile(new ProductDtoAutoMapperProfile());
+                mc.AddProfile(new OrderViewModelAutoMapperProfiles());
                 //mc.AddProfile(new DropDownListsDtoAutoMapperProfile());
 
             });

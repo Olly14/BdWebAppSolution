@@ -18,6 +18,8 @@ namespace Bd.Web.App.DtoModels
 
         public int Quantity { get; set; }
 
+        public double TotalQuantityPrice { get; set; }
+
         public OrderDto Order { get; set; }
 
         public ProductDto Product { get; set; }
