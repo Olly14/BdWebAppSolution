@@ -82,15 +82,17 @@ namespace Bd.Web.App.Controllers
             {
                 var orderItem = new OrderItemViewModel()
                 {
-                    ProductId = product.ProductId,
-                    ProductName = product.Name,
+                    Product = product,
                     Quantity = 1,
                     ProductType = product.Type,
                     ProductDescription = product.Description,
                     UriKey = id
                 };
+                orderItem.ProductName = product.Name;
                 orderItem.TotalQuantityPrice = orderItem.Quantity * product.Price;
                 orderItem.Product = product;
+                orderItem.UnitPrice = product.Price;
+                orderItem.Description = product.Description;
                 return orderItem;
                 //_orderItemBasket.OrderItems.Add(orderItem);
             });
@@ -150,8 +152,9 @@ namespace Bd.Web.App.Controllers
         {
             var orderItems = _orderItemBasket.OrderItems;
             var order = await CreateOrderAsync(orderItems);
-            var path = string.Format("{0}{1}",
-                HttpClientProvider.HttpClient.BaseAddress, Orders_Base_Address);
+            var path = string.Format("{0}{1}",HttpClientProvider.HttpClient.BaseAddress, Orders_Base_Address);
+
+            //var path = string.Format("{0}{1}",HttpClientProvider.HttpClient.BaseAddress, ConfirmOrder_Base_Address);
             var orderPostResult = await _apiClient.PostAsync(path, _mapper.Map<OrderDto>(order));
             var confirmedOrder = _mapper.Map<OrderViewModel>(orderPostResult);
             return View(confirmedOrder);
@@ -444,13 +447,22 @@ namespace Bd.Web.App.Controllers
             {
                 foreach (var item in orderItems)
                 {
-                    var orderItem = new OrderItemViewModel() 
-                    {
-                        OrderId = newOrder.OrderId,
-                        Quantity = item.Quantity,
-                        TotalQuantityPrice = item.TotalQuantityPrice,
-                        Order = newOrder
-                    };
+                    var orderItem = _mapper.Map<OrderItemViewModel>(item);
+                    orderItem.OrderId = newOrder.OrderId;
+                    orderItem.CreatedDate = DateTime.UtcNow;
+                    orderItem.Order = newOrder;
+
+
+
+                    //var orderItem = new OrderItemViewModel() 
+                    //{
+                    //    CreatedDate = DateTime.UtcNow,
+                    //    OrderId = newOrder.OrderId,
+                    //    ProductName = item.ProductName,
+                    //    Quantity = item.Quantity,
+                    //    TotalQuantityPrice = item.TotalQuantityPrice,
+                    //    Order = newOrder
+                    //};
                     var orderProduct = new OrderProductViewModel()
                     {
                         OrderId = newOrder.OrderId,

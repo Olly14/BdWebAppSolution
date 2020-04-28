@@ -28,21 +28,14 @@
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.PriceId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PricesId)
-            </th>
+
             <th>
                 @Html.DisplayNameFor(model => model.Type)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Price)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UriKey)
-            </th>
+
             <th></th>
             <th></th>
             <th></th>
@@ -52,26 +45,14 @@
         @foreach (var item in Model)
         {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.PriceId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PricesId)
-            </td>
+
             <td>
                 @Html.DisplayFor(modelItem => item.Type)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Price)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UriKey)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
+
             <td>
                 <a asp-action="Edit" asp-route-id="@item.UriKey" class="btn btn-primary">Edit</a>
             </td>

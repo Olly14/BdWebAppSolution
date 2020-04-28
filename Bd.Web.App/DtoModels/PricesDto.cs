@@ -7,7 +7,7 @@ namespace Bd.Web.App.DtoModels
 {
     public class PricesDto
     {
-        public string PriceId { get; set; }
+        public string PricesId { get; set; }
 
         public string ProductId { get; set; }
 

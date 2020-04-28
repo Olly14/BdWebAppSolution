@@ -10,6 +10,10 @@ namespace Bd.Web.App.Models
 
         public string ProductId { get; set; }
 
+        public string ProductName { get; set; }
+
+        public string Description { get; set; }
+
         public DateTime CreatedDate { get; set; }
 
         public double UnitPrice { get; set; }
@@ -21,8 +25,6 @@ namespace Bd.Web.App.Models
         public ProductViewModel Product { get; set; }
 
         public double TotalQuantityPrice { get; set; }
-
-        public string ProductName { get; internal set; }
 
         public string ProductType { get; internal set; }
 

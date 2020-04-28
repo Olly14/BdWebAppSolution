@@ -12,6 +12,10 @@ namespace Bd.Web.App.DtoModels
 
         public string ProductId { get; set; }
 
+        public string ProductName { get; set; }
+
+        public string Description { get; set; }
+
         public DateTime CreatedDate { get; set; }
 
         public double UnitPrice { get; set; }

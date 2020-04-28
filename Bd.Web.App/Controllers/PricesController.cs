@@ -16,8 +16,9 @@ namespace Bd.Web.App.Controllers
     public class PricesController : Controller
     {
         private const string Base_Address = "Prices";
+        private const string Post_Address = "Prices/PostPrices";
 
-        
+
 
         private IApiClient _apiClient;
         private IMapper _mapper;
@@ -37,7 +38,7 @@ namespace Bd.Web.App.Controllers
             var prices = new List<PricesViewModel>();
             using (var client = HttpClientProvider.HttpClient)
             {
-                prices = _mapper.Map<IEnumerable<PricesViewModel>>(await _apiClient.ListAsync<ProductViewModel>(path)).ToList();
+                prices = _mapper.Map<IEnumerable<PricesViewModel>>(await _apiClient.ListAsync<PricesDto>(path)).ToList();
             }
             prices = (await PopulateUriKeyAsync(prices)).ToList();
             return View(prices);
@@ -47,13 +48,12 @@ namespace Bd.Web.App.Controllers
 
         // GET: Prices/Details/5
         [HttpGet]
-        public ActionResult Details(string id)
+        public async Task<ActionResult> Details(string id)
         {
-            var path = string.Format("{0}{1}/{2}",
-                HttpClientProvider.HttpClient.BaseAddress, Base_Address,
+            var path = string.Format("{0}/{1}", Base_Address,
                 GuidEncoder.Decode(id));
-            var price = _mapper.Map<PricesViewModel>(_apiClient.GetAsync<PricesDto>(path));
-            price.UriKey = GuidEncoder.Encode(price.PriceId);
+            var price = _mapper.Map<PricesViewModel>(await _apiClient.GetAsync<PricesDto>(path));
+            price.UriKey = GuidEncoder.Encode(price.PricesId);
             return View(price);
         }
 
@@ -65,9 +65,9 @@ namespace Bd.Web.App.Controllers
         {
             var newPrice = new PricesViewModel()
             {
-                PriceId = Guid.NewGuid().ToString()
+                PricesId = Guid.NewGuid().ToString()
             };
-            newPrice.UriKey = GuidEncoder.Encode(newPrice.PriceId);
+            newPrice.UriKey = GuidEncoder.Encode(newPrice.PricesId);
             return View("CreateEdit", newPrice);
         }
 
@@ -83,7 +83,7 @@ namespace Bd.Web.App.Controllers
                 // TODO: Add insert logic here
                 if (ModelState.IsValid)
                 {
-                    model.PriceId = GuidEncoder.Decode(model.UriKey).ToString();
+                    model.PricesId = GuidEncoder.Decode(model.UriKey).ToString();
                     var result = await _apiClient.PostAsync<PricesDto>(path,
                         _mapper.Map<PricesDto>(model));
                     return RedirectToAction(nameof(Index));
@@ -102,14 +102,13 @@ namespace Bd.Web.App.Controllers
 
         // GET: Prices/Edit/5
         [HttpGet]
-        public ActionResult Edit(string id)
+        public async Task<ActionResult> Edit(string id)
         {
-            var path = string.Format("{0}{1}/{2}",
-                HttpClientProvider.HttpClient.BaseAddress, Base_Address,
+            var path = string.Format("{0}/{1}", Base_Address,
                 GuidEncoder.Decode(id));
-            var price = _mapper.Map<PricesViewModel>(_apiClient.GetAsync<PricesDto>(path));
-            price.UriKey = GuidEncoder.Encode(price.PriceId);
-            return View(price);
+            var price = _mapper.Map<PricesViewModel>(await _apiClient.GetAsync<PricesDto>(path));
+            price.UriKey = GuidEncoder.Encode(price.PricesId);
+            return View("CreateEdit", price);
         }
 
         // POST: Prices/Edit/5
@@ -124,7 +123,7 @@ namespace Bd.Web.App.Controllers
                 // TODO: Add insert logic here
                 if (ModelState.IsValid)
                 {
-                    model.PriceId = GuidEncoder.Decode(model.UriKey).ToString();
+                    model.PricesId = GuidEncoder.Decode(model.UriKey).ToString();
                     await _apiClient.PutAsync<PricesDto>(path,
                         _mapper.Map<PricesDto>(model));
                     return RedirectToAction(nameof(Index));
@@ -165,14 +164,14 @@ namespace Bd.Web.App.Controllers
 
         private async Task<IEnumerable<PricesViewModel>> PopulateUriKeyAsync(List<PricesViewModel> products)
         {
-            return await Task.Run(() =>
+            return await Task.Run((Func<IEnumerable<PricesViewModel>>)(() =>
             {
-                return products.Select(p =>
+                return products.Select((Func<PricesViewModel, PricesViewModel>)(p =>
                 {
-                    p.UriKey = GuidEncoder.Encode(p.PriceId);
+                    p.UriKey = GuidEncoder.Encode((string)p.PricesId);
                     return p;
-                });
-            });
+                }));
+            }));
         }
 
 

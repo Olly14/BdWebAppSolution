@@ -113,7 +113,9 @@ namespace Bd.Web.App.WebApiClients
                     Content = new StringContent(JsonConvert.SerializeObject(newItem), Encoding.UTF8,
                         "application/json")
                 };
-           // message.Headers.Authorization = new AuthenticationHeaderValue("Bearer", await GetAccessTokenAsync());
+            // message.Headers.Authorization = new AuthenticationHeaderValue("Bearer", await GetAccessTokenAsync());
+
+
 
             var responseA = await _httpClient.SendAsync(message);
 

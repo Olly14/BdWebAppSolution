@@ -6,24 +6,20 @@
     ViewData["Title"] = Model.Type;
 }
 
-<h2>Model.Type Details</h2>
-
+<h2>@Model.Type Details</h2>
+<hr />
+<br />
 <div>
-    <h4>Model.Type</h4>
+    <h4>@Model.Type</h4>
     <hr />
     <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.PriceId)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.PriceId)
-        </dd>
-        <dt>
+        @*<dt>
             @Html.DisplayNameFor(model => model.PricesId)
         </dt>
         <dd>
             @Html.DisplayFor(model => model.PricesId)
-        </dd>
+        </dd>*@
+
         <dt>
             @Html.DisplayNameFor(model => model.Type)
         </dt>
@@ -36,12 +32,7 @@
         <dd>
             @Html.DisplayFor(model => model.Price)
         </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.UriKey)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.UriKey)
-        </dd>
+
     </dl>
 </div>
 <div>

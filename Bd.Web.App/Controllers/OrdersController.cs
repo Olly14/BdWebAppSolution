@@ -16,7 +16,9 @@ namespace Bd.Web.App.Controllers
     public class OrdersController : Controller
     {
 
-        private readonly string Orders_Base_Address = "Orders";
+        private readonly string Base_Address = "Orders";
+
+        private readonly string OrderItems_By_OrderId = "Orders/GetOrderAndOrderItems";
 
         private readonly string OrdersList_Base_Address = "Orders/GetOrders";
 
@@ -35,23 +37,44 @@ namespace Bd.Web.App.Controllers
 
 
         // GET: Orders
-        public async Task<ActionResult> GetOrdersAsync()
+
+        public async Task<ActionResult> GetOrders()
         {
-            var path = string.Format("{0}{1}", HttpClientProvider.HttpClient.BaseAddress, OrdersList_Base_Address);
+            var path = string.Format("{0}{1}", HttpClientProvider.HttpClient.BaseAddress, Base_Address);
             var response = new List<OrderViewModel>();
             using (var client = HttpClientProvider.HttpClient)
             {
-                response = (await _apiClient.ListAsync<OrderViewModel>(path)).ToList();
+                response = _mapper
+                    .Map<IEnumerable<OrderViewModel>>((
+                    await _apiClient.ListAsync<OrderDto>(path)))
+                    .ToList();
                 response = (await PopulateUriKeyAsync(response)).ToList();
                 return View(response);
             }
         }
 
         // GET: Orders/Details/5
-        public ActionResult Details(int id)
+        public async Task<ActionResult> Details(string id)
         {
-            return View();
+            var path = string.Format("{0}/{1}", Base_Address,
+                GuidEncoder.Decode(id));
+            var order = _mapper.Map<OrderViewModel>(await _apiClient.GetAsync<OrderDto>(path));
+            order.UriKey = GuidEncoder.Encode(order.OrderId);
+            return View(order);
         }
+
+
+        [HttpGet]
+        public async Task<ActionResult> OrderItems(string id)
+        {
+            var path = string.Format("{0}/{1}", Base_Address,
+                GuidEncoder.Decode(id));
+            var order = _mapper.Map<OrderViewModel>(await _apiClient.GetAsync<OrderDto>(path));
+            order.UriKey = GuidEncoder.Encode(order.OrderId);
+            return RedirectToAction("GetOrderItemsByOrderId", nameof(OrderItems), new {id = order.UriKey } );
+        }
+
+
 
         // GET: Orders/Create
         public ActionResult Create()
@@ -69,7 +92,7 @@ namespace Bd.Web.App.Controllers
             {
                 // TODO: Add insert logic here
 
-                return RedirectToAction(nameof(GetOrdersAsync));
+                return RedirectToAction(nameof(GetOrders));
             }
             catch
             {
@@ -100,7 +123,7 @@ namespace Bd.Web.App.Controllers
             {
                 // TODO: Add update logic here
 
-                return RedirectToAction(nameof(GetOrdersAsync));
+                return RedirectToAction(nameof(GetOrders));
             }
             catch
             {
@@ -123,7 +146,7 @@ namespace Bd.Web.App.Controllers
             {
                 // TODO: Add delete logic here
 
-                return RedirectToAction(nameof(GetOrdersAsync));
+                return RedirectToAction(nameof(GetOrders));
             }
             catch
             {
@@ -148,7 +171,7 @@ namespace Bd.Web.App.Controllers
             {
                 return orders.Select(o =>
                 {
-                    o.OrderId = GuidEncoder.Encode(o.OrderId);
+                    o.UriKey = GuidEncoder.Encode(o.OrderId);
                     return o;
                 });
             });

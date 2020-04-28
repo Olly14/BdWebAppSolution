@@ -7,8 +7,6 @@ namespace Bd.Web.App.Models
 {
     public class PricesViewModel
     {
-        public string PriceId { get; set; }
-
         public string PricesId { get; set; }
 
         public string Type { get; set; }
