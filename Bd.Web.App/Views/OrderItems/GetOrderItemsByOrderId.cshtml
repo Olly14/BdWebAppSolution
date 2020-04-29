@@ -11,8 +11,15 @@
 @{
     ViewData["Title"] = "List of Order items";
 }
+@{
+    if (!string.IsNullOrWhiteSpace(@ViewBag.Owner))
+    {
+        <h2>Owner: @ViewBag.Owner</h2>
+    }
+    else
+    { <h2>List of Order items</h2>}
+}
 
-<h2>List of Order items</h2>
 
 <hr />
 <br />
@@ -24,13 +31,10 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.OrderItemId)
+                @Html.DisplayNameFor(model => model.ProductName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.OrderId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ProductId)
+                @Html.DisplayNameFor(model => model.ProductDescription)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.CreatedDate)
@@ -44,18 +48,12 @@
             <th>
                 @Html.DisplayNameFor(model => model.TotalQuantityPrice)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ProductName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ProductType)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ProductDescription)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UriKey)
-            </th>
+
+            @*<th>
+                    @Html.DisplayNameFor(model => model.ProductType)
+                </th>*@
+
+
             <th></th>
         </tr>
     </thead>
@@ -64,13 +62,10 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.OrderItemId)
+                    @Html.DisplayFor(modelItem => item.ProductName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.OrderId)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ProductId)
+                    @Html.DisplayFor(modelItem => item.Description)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.CreatedDate)
@@ -84,18 +79,12 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.TotalQuantityPrice)
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ProductName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ProductType)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ProductDescription)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.UriKey)
-                </td>
+
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.ProductType)
+                    </td>*@
+
+
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.UriKey" class="btn btn-primary">Edit</a>
                 </td>

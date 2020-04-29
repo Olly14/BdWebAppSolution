@@ -11,8 +11,14 @@
 @{
     ViewData["Title"] = "List of Order items";
 }
+@{
+    if (!string.IsNullOrWhiteSpace(@ViewBag.Owner))
+    {
+        <h2>Owner: @ViewBag.Owner</h2>
+    }
+    else { <h2>List of Order items</h2>}
+}
 
-    <h2>List of Order items</h2>
 
 <hr />
 <br />
@@ -42,9 +48,9 @@
                 @Html.DisplayNameFor(model => model.TotalQuantityPrice)
             </th>
 
-            <th>
+            @*<th>
                 @Html.DisplayNameFor(model => model.ProductType)
-            </th>
+            </th>*@
 
 
             <th></th>
@@ -53,41 +59,41 @@
     <tbody>
         @foreach (var item in Model)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProductName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProductDescription)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UnitPrice)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Quantity)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TotalQuantityPrice)
-            </td>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UnitPrice)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalQuantityPrice)
+                </td>
 
-            <td>
-                @Html.DisplayFor(modelItem => item.ProductType)
-            </td>
+                @*<td>
+                    @Html.DisplayFor(modelItem => item.ProductType)
+                </td>*@
 
 
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.UriKey" class="btn btn-primary">Edit</a>
-            </td>
-            <td>
-                <a asp-action="Details" asp-route-id="@item.UriKey" class="btn btn-primary">Details</a>
-            </td>
-            <td>
-                <a asp-action="Delete" asp-route-id="@item.UriKey" class="btn btn-primary">Delete</a>
-            </td>
-        </tr>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.UriKey" class="btn btn-primary">Edit</a>
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.UriKey" class="btn btn-primary">Details</a>
+                </td>
+                <td>
+                    <a asp-action="Delete" asp-route-id="@item.UriKey" class="btn btn-primary">Delete</a>
+                </td>
+            </tr>
         }
     </tbody>
 </table>

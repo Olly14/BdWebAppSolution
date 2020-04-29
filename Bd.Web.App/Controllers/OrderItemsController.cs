@@ -18,6 +18,7 @@ namespace Bd.Web.App.Controllers
 
         private readonly string Base_Address = "OrderItems";
         private readonly string OrderItems_By_OrderId = "OrderItems/GetOrderItemsByOrderId";
+        private readonly string OwnerOfOrder = "Utilities/GetOrderAppUserNameAsync";
         private readonly string Products_Base_Address = "Products";
         private readonly IApiClient _apiClient;
         private readonly IMapper _mapper;
@@ -47,10 +48,15 @@ namespace Bd.Web.App.Controllers
         [HttpGet]
         public async Task<IActionResult> GetOrderItemsByOrderId(string id)
         {
+            var decodedId = GuidEncoder.Decode(id);
+            var userPath = string.Format("{0}/{1}", OwnerOfOrder, decodedId);
+            var ownerDetails = await _apiClient.GetAsync<AppUserNameDto>(userPath);
+            ViewBag.Owner = ownerDetails.FullName;
             var path = string.Format("{0}/{1}", OrderItems_By_OrderId,
-                GuidEncoder.Decode(id));
+                decodedId);
             var orderItems = _mapper.Map<IEnumerable<OrderItemViewModel>>(await _apiClient.ListAsync<OrderItemDto>(path));
-            
+
+
             orderItems = await PopulateUriKeyAsync(orderItems.ToList());
             orderItems = await PopulateProductTypesAsync(orderItems);
 
