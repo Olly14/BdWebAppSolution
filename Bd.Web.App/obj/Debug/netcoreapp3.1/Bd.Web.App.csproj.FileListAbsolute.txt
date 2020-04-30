@@ -132,3 +132,4 @@ C:\Users\Olayinka.Ayoola\source\repos\BdWebAppSolution\Bd.Web.App\obj\Debug\netc
 C:\Users\Olayinka.Ayoola\source\repos\BdWebAppSolution\Bd.Web.App\obj\Debug\netcoreapp3.1\Razor\Views\Orders\GetOrders.cshtml.g.cs
 C:\Users\Olayinka.Ayoola\source\repos\BdWebAppSolution\Bd.Web.App\obj\Debug\netcoreapp3.1\Razor\Views\OrderItems\Index.cshtml.g.cs
 C:\Users\Olayinka.Ayoola\source\repos\BdWebAppSolution\Bd.Web.App\obj\Debug\netcoreapp3.1\Razor\Views\OrderItems\GetOrderItemsByOrderId.cshtml.g.cs
+C:\Users\Olayinka.Ayoola\source\repos\BdWebAppSolution\Bd.Web.App\obj\Debug\netcoreapp3.1\Razor\Views\ShoppingCarts\OrderItems.cshtml.g.cs

@@ -26,7 +26,7 @@ namespace Bd.Web.App.Controllers
 
         private readonly string OneProduct_Base_Address = "Products/GetProduct";
 
-        private readonly string DropDownLists_Base_Address = "Prices";
+        private readonly string OrderItems_Base_Address = "OrderItems";
 
         private readonly string PricesList_Base_Address = "Prices";
 
@@ -45,6 +45,23 @@ namespace Bd.Web.App.Controllers
             _apiClient = apiClient;
             _orderItemBasket = orderItemBasket;
         }
+
+
+
+
+        public async Task<IActionResult> OrderItems()
+        {
+            var path = string.Format("{0}{1}", HttpClientProvider.HttpClient.BaseAddress,
+                OrderItems_Base_Address);
+            var items = _mapper.Map<IEnumerable<OrderItemViewModel>>(
+                await _apiClient.ListAsync<OrderItemDto>(path));
+            items = await PopulateUriKeyAsync(items.ToList());
+            ViewBag.Owner = "";
+            return View(items);
+
+        }
+
+
 
 
         // GET: ShoppingCartController
@@ -93,6 +110,7 @@ namespace Bd.Web.App.Controllers
                 orderItem.Product = product;
                 orderItem.UnitPrice = product.Price;
                 orderItem.Description = product.Description;
+                orderItem.ProductId = product.ProductId;
                 return orderItem;
                 //_orderItemBasket.OrderItems.Add(orderItem);
             });
@@ -239,6 +257,18 @@ namespace Bd.Web.App.Controllers
         {
             product.UriKey = GuidEncoder.Encode(product.ProductId);
             return product;
+        }
+        private async Task<List<OrderItemViewModel>> PopulateUriKeyAsync(List<OrderItemViewModel> items)
+        {
+            return await Task.Run(() =>
+            {
+
+                return items.Select(oi =>
+                {
+                    oi.UriKey = GuidEncoder.Encode(oi.OrderItemId);
+                    return oi;
+                }).ToList(); ;
+            });
         }
 
         private async Task<IEnumerable<PricesViewModel>> GetPricesAsync()
