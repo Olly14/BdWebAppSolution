@@ -11,10 +11,14 @@
     }
 }
 <h1>Products</h1>
+<hr />
+<br />
+
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="CreateEdit" class="btn btn-primary">Create New</a>
 </p>
+
 <table class="table">
     <thead>
         <tr>
@@ -40,7 +44,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
-            >
+
             <td>
                 <a asp-action="Edit" asp-route-id="@item.UriKey" class="btn btn-primary">Edit</a>
             </td>

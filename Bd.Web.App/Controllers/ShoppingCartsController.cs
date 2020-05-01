@@ -470,7 +470,7 @@ namespace Bd.Web.App.Controllers
                 OrderId = Guid.NewGuid().ToString(),
                 CreatedDate = DateTime.UtcNow,
                 //Todo: Needs The Identity.User
-                AppUserId = "16DC732D-F6D0-4D1B-B166-3E0451E93DCA",
+                AppUserId = "70432359-2433-4BF5-9588-C2E629720C89",
                 Status = "InProcess"
             };
             if (orderItems.Count() >= 1)
