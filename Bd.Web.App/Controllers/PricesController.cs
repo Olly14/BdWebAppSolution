@@ -19,6 +19,7 @@ namespace Bd.Web.App.Controllers
     {
         private const string Base_Address = "Prices";
         private const string Post_Address = "Prices/PostPrices";
+        private const string AlternatePost_Address = "Prices/GetPricesCreated";
 
 
 
@@ -77,15 +78,22 @@ namespace Bd.Web.App.Controllers
         {
             var path = string.Format("{0}{1}",
                 HttpClientProvider.HttpClient.BaseAddress, Base_Address);
-            model.PricesId = Guid.NewGuid().ToString();
+
+
+
+            //model.PricesId = Guid.NewGuid().ToString();
             try
             {
                
                 // TODO: Add insert logic here
                 if (ModelState.IsValid)
                 {
-                    var result = await _apiClient.PostAsync(path,
-                    _mapper.Map<PricesDto>(model));
+                    var altPath = string.Format("{0}/{1}/{2}", AlternatePost_Address,
+                        model.Type, model.Price);
+
+                    //var result = await _apiClient.PostAsync(path,
+                    //_mapper.Map<PricesDto>(model));
+                    var result = await _apiClient.GetAsync<PricesDto>(altPath);
 
                     return RedirectToAction(nameof(Index));
                 }

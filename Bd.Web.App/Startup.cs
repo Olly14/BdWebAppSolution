@@ -1,5 +1,6 @@
 ﻿
 using AutoMapper;
+using Bd.Web.App.Helpers;
 using Bd.Web.App.HttpHandlers;
 using Bd.Web.App.ModelMappers.AppUser;
 using Bd.Web.App.ModelMappers.Order;
@@ -177,7 +178,11 @@ namespace Bd.Web.App
 
 
             services.AddScoped<IApiClient, ApiClient>();
+            services.AddScoped<IItemsHistoryComparer, ItemsHistoryComparer>();
+
+
             services.AddSingleton<IOrderItemBasket, OrderItemBasket>();
+            
 
 
 

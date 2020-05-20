@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Bd.Web.App.DtoModels;
+using Bd.Web.App.Helpers;
 using Bd.Web.App.HttpService;
 using Bd.Web.App.Masking;
 using Bd.Web.App.Models;
@@ -10,11 +11,12 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Bd.Web.App.Controllers
 {
-    public class ShoppingCartsController : Controller
+    public class ShoppingCartsController : BdAppBaseController
     {
         private readonly string Products_Base_Address = "Products";
 
@@ -23,6 +25,8 @@ namespace Bd.Web.App.Controllers
         private readonly string Order_History_Base_Address = "OrderHistories";
 
         private readonly string AppUsers_Base_Address = "AppUsers";
+
+        private readonly string AppUsersBySubjectId_Base_Address = "AppUsers/GetAppUserBySubjectId";
 
         private readonly string OneProduct_Base_Address = "Products/GetProduct";
 
@@ -38,12 +42,20 @@ namespace Bd.Web.App.Controllers
         private readonly IMapper _mapper;
         private readonly IApiClient _apiClient;
         private readonly IOrderItemBasket _orderItemBasket;
+        private readonly IItemsHistoryComparer _itemsHistoryComparer;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public ShoppingCartsController(IMapper mapper, IApiClient apiClient, IOrderItemBasket orderItemBasket)
+        public ShoppingCartsController(IMapper mapper,
+                                        IApiClient apiClient,
+                                        IOrderItemBasket orderItemBasket,
+                                        IItemsHistoryComparer itemsHistoryComparer,
+                                        IHttpContextAccessor httpContextAccessor): base(httpContextAccessor)
         {
             _mapper = mapper;
             _apiClient = apiClient;
             _orderItemBasket = orderItemBasket;
+            _itemsHistoryComparer = itemsHistoryComparer;
+            _httpContextAccessor = httpContextAccessor;
         }
 
 
@@ -178,17 +190,31 @@ namespace Bd.Web.App.Controllers
            
             var appUserId = order.AppUserId;
             var pathAppUser = string.Format("{0}/{1}", AppUsers_Base_Address, appUserId);
+
             var appUser = await _apiClient.GetAsync<AppUserDto>(pathAppUser);
 
             var orderPostResult = await _apiClient.PostAsync(path, _mapper.Map<OrderDto>(order));
-            var orderhistoryPostResult = await _apiClient.PostAsync(pathOrderHistory, order.OrderHistory);
 
-
-            if (appUser.OrderHistoryCount < 5)
+            var orderhistoryToHistory = await _itemsHistoryComparer.GetOrderHistoryToRecordAsync(appUser, orderItems);
+            var newOrderHistory = new OrderHistoryDto();
+            if (orderhistoryToHistory.Count > 0  && appUser.OrderHistoryCount < 5)
             {
                 appUser.OrderHistoryCount += 1;
+                newOrderHistory = _mapper.Map<OrderHistoryDto>(order);
+                newOrderHistory.OrderItems = _mapper.Map<IEnumerable<OrderItemHistoryDto>>(orderhistoryToHistory).ToList();
+                var orderhistoryPostResult = await _apiClient.PostAsync(pathOrderHistory, newOrderHistory);
                 await _apiClient.PutAsync(pathAppUser, appUser);
             }
+
+
+            
+
+
+            //if (appUser.OrderHistoryCount < 5)
+            //{
+            //    appUser.OrderHistoryCount += 1;
+            //    await _apiClient.PutAsync(pathAppUser, appUser);
+            //}
 
 
             var confirmedOrder = _mapper.Map<OrderViewModel>(orderPostResult);
@@ -419,7 +445,6 @@ namespace Bd.Web.App.Controllers
         }
 
 
-
         private ProductViewModel PopulateTypes(ProductViewModel product)
         {
             var prices = product.Prices;
@@ -473,27 +498,29 @@ namespace Bd.Web.App.Controllers
 
         private async Task<OrderViewModel> CreateOrderAsync(List<OrderItemViewModel> orderItems)
         {
+            var orderOwner = await GetLoggedInUserAppUserIdAsync();
             return await Task.Run(() =>
             {
-                var order = CreateOrders(orderItems);
+                var order = CreateOrders(orderItems, orderOwner);
                 return order;
             });
         }
 
-        private OrderViewModel CreateOrders(List<OrderItemViewModel> orderItems)
+        private OrderViewModel CreateOrders(List<OrderItemViewModel> orderItems, AppUserDto owner)
         {
             var newOrder = new OrderViewModel()
             {
                 OrderId = Guid.NewGuid().ToString(),
                 CreatedDate = DateTime.UtcNow,
-                //Todo: Needs The Identity.User
-                AppUserId = "70432359-2433-4BF5-9588-C2E629720C89",
-                Status = "InProcess"
+                Status = "InProcess",
+                AppUserId = owner.AppUserId
             };
 
+
             //Keeping history
-            var newOrderHistory = _mapper.Map<OrderHistoryDto>(newOrder);
-            if (orderItems.Count() >= 1)
+            //var orderItemsToHistory = await _itemsHistoryComparer.GetOrderHistoryToRecordAsync(owner, orderItems);
+            //var newOrderHistory = _mapper.Map<OrderHistoryDto>(newOrder);
+            if (orderItems.Count() > 0)
             {
                 foreach (var item in orderItems)
                 {
@@ -503,7 +530,12 @@ namespace Bd.Web.App.Controllers
                     orderItem.Order = newOrder;
 
                     //Keeping history
-                    var newOrderItemHistory = _mapper.Map<OrderItemHistoryDto>(orderItem);
+                    //var newOrderItemHistory = new OrderItemHistoryDto();
+                    //if (ItemsHistoryComparer.CompareTwoItems(item,))
+                    //{
+
+                    //}
+                    //    _mapper.Map<OrderItemHistoryDto>(orderItem);
                     
 
 
@@ -516,9 +548,9 @@ namespace Bd.Web.App.Controllers
                     newOrder.TotalPrice += orderItem.TotalQuantityPrice;
                     newOrder.OrderItems.Add(orderItem);
                     newOrder.OrderProducts.Add(orderProduct);
-                    newOrderHistory.OrderItems.Add(newOrderItemHistory);
-                    newOrderHistory.ProductIdDetail = item.ProductId;
-                    newOrder.OrderHistory = newOrderHistory;
+                    //newOrderHistory.OrderItems.Add(newOrderItemHistory);
+                    //newOrderHistory.ProductIdDetail = item.ProductId;
+                    //newOrder.OrderHistory = newOrderHistory;
 
                     //newOrder.AppUser.OrderHistoryCount += 1;
 
@@ -526,5 +558,17 @@ namespace Bd.Web.App.Controllers
             }
             return newOrder;
         }
+
+        private async Task<AppUserDto> GetLoggedInUserAppUserIdAsync()
+        {
+            var identity = (ClaimsIdentity)CurrentUser.Identity;
+            IEnumerable<Claim> claims = identity.Claims;
+            string userId = claims.FirstOrDefault(c => c.Type == "sub").Value;
+            var path = string.Format("{0}/{1}", AppUsersBySubjectId_Base_Address, userId);
+            var loggedInUser =  await _apiClient.GetAsync<AppUserDto>(path);
+            return loggedInUser;
+        }
+
+
     }
 }
