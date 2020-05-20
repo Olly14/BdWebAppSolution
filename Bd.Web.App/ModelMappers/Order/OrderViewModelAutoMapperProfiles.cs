@@ -8,10 +8,13 @@ namespace Bd.Web.App.ModelMappers.Order
     {
         public OrderViewModelAutoMapperProfiles()
         {
-            CreateMap<OrderViewModel, OrderDto>().ReverseMap();
+            CreateMap<OrderViewModel, OrderDto>()
+                .ForMember(des => des.AppUser, opt => opt.MapFrom(src => src.AppUser))
+                .ReverseMap();
             CreateMap<OrderViewModel, OrderViewModel>().ReverseMap();
             CreateMap<OrderItemViewModel, OrderItemDto>().ReverseMap();
             CreateMap<OrderItemViewModel, OrderItemViewModel>().ReverseMap();
+
         }
     }
 }

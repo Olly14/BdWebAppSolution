@@ -4,6 +4,7 @@ using Bd.Web.App.HttpService;
 using Bd.Web.App.Masking;
 using Bd.Web.App.Models;
 using Bd.Web.App.WebApiClient;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -13,6 +14,7 @@ using System.Threading.Tasks;
 
 namespace Bd.Web.App.Controllers
 {
+    [Authorize]
     public class OrderItemsController : Controller
     {
 

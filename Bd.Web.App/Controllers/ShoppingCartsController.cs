@@ -20,9 +20,9 @@ namespace Bd.Web.App.Controllers
 
         private readonly string Orders_Base_Address = "Orders";
 
-        private readonly string ConfirmOrder_Base_Address = "Orders/PostOrder";
+        private readonly string Order_History_Base_Address = "OrderHistories";
 
-        private readonly string ProductsList_Base_Address = "Product/GetProducts";
+        private readonly string AppUsers_Base_Address = "AppUsers";
 
         private readonly string OneProduct_Base_Address = "Products/GetProduct";
 
@@ -172,8 +172,25 @@ namespace Bd.Web.App.Controllers
             var order = await CreateOrderAsync(orderItems);
             var path = string.Format("{0}{1}",HttpClientProvider.HttpClient.BaseAddress, Orders_Base_Address);
 
-            //var path = string.Format("{0}{1}",HttpClientProvider.HttpClient.BaseAddress, ConfirmOrder_Base_Address);
+            var pathOrderHistory = string.Format("{0}{1}",HttpClientProvider.HttpClient.BaseAddress, Order_History_Base_Address);
+
+
+           
+            var appUserId = order.AppUserId;
+            var pathAppUser = string.Format("{0}/{1}", AppUsers_Base_Address, appUserId);
+            var appUser = await _apiClient.GetAsync<AppUserDto>(pathAppUser);
+
             var orderPostResult = await _apiClient.PostAsync(path, _mapper.Map<OrderDto>(order));
+            var orderhistoryPostResult = await _apiClient.PostAsync(pathOrderHistory, order.OrderHistory);
+
+
+            if (appUser.OrderHistoryCount < 5)
+            {
+                appUser.OrderHistoryCount += 1;
+                await _apiClient.PutAsync(pathAppUser, appUser);
+            }
+
+
             var confirmedOrder = _mapper.Map<OrderViewModel>(orderPostResult);
             return View(confirmedOrder);
         }
@@ -473,6 +490,9 @@ namespace Bd.Web.App.Controllers
                 AppUserId = "70432359-2433-4BF5-9588-C2E629720C89",
                 Status = "InProcess"
             };
+
+            //Keeping history
+            var newOrderHistory = _mapper.Map<OrderHistoryDto>(newOrder);
             if (orderItems.Count() >= 1)
             {
                 foreach (var item in orderItems)
@@ -482,25 +502,26 @@ namespace Bd.Web.App.Controllers
                     orderItem.CreatedDate = DateTime.UtcNow;
                     orderItem.Order = newOrder;
 
+                    //Keeping history
+                    var newOrderItemHistory = _mapper.Map<OrderItemHistoryDto>(orderItem);
+                    
 
 
-                    //var orderItem = new OrderItemViewModel() 
-                    //{
-                    //    CreatedDate = DateTime.UtcNow,
-                    //    OrderId = newOrder.OrderId,
-                    //    ProductName = item.ProductName,
-                    //    Quantity = item.Quantity,
-                    //    TotalQuantityPrice = item.TotalQuantityPrice,
-                    //    Order = newOrder
-                    //};
                     var orderProduct = new OrderProductViewModel()
                     {
                         OrderId = newOrder.OrderId,
                         ProductId = item.ProductId,
                     };
+
                     newOrder.TotalPrice += orderItem.TotalQuantityPrice;
                     newOrder.OrderItems.Add(orderItem);
                     newOrder.OrderProducts.Add(orderProduct);
+                    newOrderHistory.OrderItems.Add(newOrderItemHistory);
+                    newOrderHistory.ProductIdDetail = item.ProductId;
+                    newOrder.OrderHistory = newOrderHistory;
+
+                    //newOrder.AppUser.OrderHistoryCount += 1;
+
                 }
             }
             return newOrder;

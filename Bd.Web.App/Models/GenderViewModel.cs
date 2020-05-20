@@ -9,7 +9,9 @@ namespace Bd.Web.App.Models
         public string GenderId { get; set; }
         public string Type { get; set; }
 
+        public string UriKey { get; set; }
+
         //Navigation property
-        public virtual IEnumerable<AppUserModel> AppUsers { get; set; }
+        public virtual IEnumerable<AppUserViewModel> AppUsers { get; set; }
     }
 }

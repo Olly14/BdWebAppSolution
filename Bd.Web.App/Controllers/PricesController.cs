@@ -4,6 +4,7 @@ using Bd.Web.App.HttpService;
 using Bd.Web.App.Masking;
 using Bd.Web.App.Models;
 using Bd.Web.App.WebApiClient;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -13,6 +14,7 @@ using System.Threading.Tasks;
 
 namespace Bd.Web.App.Controllers
 {
+    [Authorize]
     public class PricesController : Controller
     {
         private const string Base_Address = "Prices";
@@ -63,11 +65,8 @@ namespace Bd.Web.App.Controllers
         [HttpGet]
         public ActionResult Create()
         {
-            var newPrice = new PricesViewModel()
-            {
-                PricesId = Guid.NewGuid().ToString()
-            };
-            newPrice.UriKey = GuidEncoder.Encode(newPrice.PricesId);
+            var newPrice = new PricesViewModel();
+
             return View("CreateEdit", newPrice);
         }
 
@@ -78,14 +77,16 @@ namespace Bd.Web.App.Controllers
         {
             var path = string.Format("{0}{1}",
                 HttpClientProvider.HttpClient.BaseAddress, Base_Address);
+            model.PricesId = Guid.NewGuid().ToString();
             try
             {
+               
                 // TODO: Add insert logic here
                 if (ModelState.IsValid)
                 {
-                    model.PricesId = GuidEncoder.Decode(model.UriKey).ToString();
-                    var result = await _apiClient.PostAsync<PricesDto>(path,
-                        _mapper.Map<PricesDto>(model));
+                    var result = await _apiClient.PostAsync(path,
+                    _mapper.Map<PricesDto>(model));
+
                     return RedirectToAction(nameof(Index));
                 }
 

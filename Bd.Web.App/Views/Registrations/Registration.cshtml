@@ -1,0 +1,85 @@
+﻿@model Bd.Web.App.Models.RegistratioViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Registration";
+}
+<style>
+    .customError {
+        color: red
+    }
+
+    .errorBox {
+        border: medium;
+        background-color: pink;
+    }
+</style>
+<h1>Welcome to Deals on Wheel Registration Page</h1>
+<br />
+<h4>New User Registration</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Registration" class="registrationForm">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control EmailInput" id="EmailInputId" />
+
+                <p class="EmailInputError hidden customError help-block" id="EmailInputErrorId">'Email' is required</p>
+                <p class="EmailInputMatchError hidden customError help-block" id="EmailInputMatchErrorId">'Email' pattern such as 'johnson@limdo.com'</p>
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control  PasswordInput" id="PasswordInputId" />
+
+                <p class="help-block hidden PasswordInputError customError" id="PasswordInputErrorId">'Password' is required</p>
+
+                <p class="help-block hidden PasswordInputMatchError customError" id="PasswordInputMatchErrorId">
+                    'Password'must be alphanumeric with at least one special character and capital letter.
+                </p>
+
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ConfirmedPassword" class="control-label"></label>
+                <input asp-for="ConfirmedPassword" class="form-control ConfirmedPasswordInput" id="ConfirmedPasswordInputId" />
+
+                <p class="help-block hidden ConfirmedPasswordInputError customError" id="ConfirmedPasswordInputErrorId">'Confirmed Password' is required</p>
+
+                <p class="help-block hidden ConfirmedPasswordMatchError customError " id="ConfirmedPasswordMatchErrorId">
+                    'Confirmed Password' must be alphanumeric with at least one special character and capital letter.
+                </p>
+
+                <span asp-validation-for="ConfirmedPassword" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" id="registrationBtnId" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+
+@section Scripts{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <script src="~/Scripts/registrationValidation.js"></script>
+    <script>
+            //$(document).ready(function () {
+            //    registrationValidation.init();
+            //});
+        </script>
+
+}
+

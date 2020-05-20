@@ -1,0 +1,159 @@
+﻿@model Bd.Web.App.Models.AppUserViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>New Registration Details for App User </h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" id="registrationBtnId">
+            @Html.Hidden("UriKey")
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+
+
+            <div class="form-group">
+                <label asp-for="FirstName" class="control-label"></label>
+                <input asp-for="FirstName" class="form-control" id="FirstNameInputId" />
+
+                <p class="FirstNameInputError hidden customError help-block" id="FirstNameInputErrorId">
+                    'First Name' is required
+                </p>
+                <p class="FirstNameInputLengthError hidden customError help-block" id="FirstNameInputLengthErrorId">
+                    'First Name' caharacters must be between 3 to 20 inclusive.
+                </p>
+
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-group">
+                <label asp-for="LastName" class="control-label"></label>
+                <input asp-for="LastName" class="form-control" id="LastNameInputId" />
+
+                <p class="LastNameInputError hidden customError help-block" id="LastNameInputErrorId">
+                    'Last Name' is required
+                </p>
+                <p class="LastNameInputLengthError hidden customError help-block" id="LastNameInputLengthErrorId">
+                    'Last Name' characters must be between 3 to 20 inclusive.
+                </p>
+
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="FirstLineOfAddress" class="control-label"></label>
+                <input asp-for="FirstLineOfAddress" class="form-control" id="FirstLineOfAddressInputId" />
+
+                <p class="FirstLineOfAddressInputError hidden customError help-block" id="FirstLineOfAddressInputErrorId">
+                    'First Line Of Address' is required
+                </p>
+                <p class="FirstLineOfAddressInputLengthError hidden customError help-block" id="FirstLineOfAddressInputLengthErrorId">
+                    'First Line Of Address' characters must be between 3 to 50 inclusive.
+                </p>
+
+
+                <span asp-validation-for="FirstLineOfAddress" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="SecondLineOfAddress" class="control-label"></label>
+                <input asp-for="SecondLineOfAddress" class="form-control" id="SecondLineOfAddressInputId" />
+
+                <p class="SecondLineOfAddressInputError hidden customError help-block" id="SecondLineOfAddressInputErrorId">
+                    'Second Line Of Address' is required
+                </p>
+                <p class="SecondLineOfAddressInputLengthError hidden customError help-block" id="SecondLineOfAddressInputLengthErrorId">
+                    'Second Line Of Address' characters must be between 3 to 50 inclusive.
+                </p>
+
+
+                <span asp-validation-for="SecondLineOfAddress" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Town" class="control-label"></label>
+                <input asp-for="Town" class="form-control" id="TownInputId" />
+
+
+                <p class="TownInputError hidden customError help-block" id="TownInputErrorId">
+                    'Town' is required
+                </p>
+                <p class="TownInputLengthError hidden customError help-block" id="TownInputLengthErrorId">
+                    'Town' characters must be between 3 to 20 inclusive.
+                </p>
+
+
+                <span asp-validation-for="Town" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="PostCode" class="control-label"></label>
+                <input asp-for="PostCode" class="form-control" id="PostcodeInputId" />
+
+
+                <p class="PostcodeInputError hidden customError help-block" id="PostcodeInputErrorId">
+                    'Postcode' is required
+                </p>
+                <p class="PostcodeInputMatchError hidden customError help-block" id="PostcodeInputMatchErrorId">
+                    'Postcode' pattern such as UK 'SE22 3TY, RM6 6TT, SW1 2WRR'
+                </p>
+
+                <span asp-validation-for="PostCode" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="MobileNumber" class="control-label"></label>
+                <input asp-for="MobileNumber" class="form-control" id="MobileNumberInputId" />
+
+
+                <p class="MobileNumberInputError hidden customError help-block" id="MobileNumberInputErrorId">
+                    'Mobile Number' is required
+                </p>
+                <p class="MobileNumberInputMatchError hidden customError help-block" id="MobileNumberInputMatchErrorId">
+                    'Mobile Number' pattern such as UK '07867867856, 020 4555 6786, 01206 567 888'
+                </p>
+
+                <span asp-validation-for="MobileNumber" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-group">
+                <label asp-for="CountryId" class="control-label"></label>
+                @Html.DropDownListFor(m => m.CountryId, new SelectList(ViewBag.Countries, "UriKey", "CountryName"), "--Select Country--", new { id = "CountryIdInputId" })
+
+                <p class="CountryIdInputError hidden customError help-block" id="CountryIdInputErrorId">
+                    'Country' is required
+                </p>
+                <span asp-validation-for="CountryId" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-group">
+                <label asp-for="GenderId" class="control-label"></label>
+
+                @Html.DropDownListFor(m => m.GenderId, new SelectList(ViewBag.Genders, "UriKey", "Type"), "--Select Gender--", new { id = "GenderIdInputId" })
+
+
+                <p class="GenderIdInputError hidden customError help-block" id="GenderIdInputErrorId">
+                    'Gender' is required
+                </p>
+                <span asp-validation-for="GenderId" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-controller="CustomerRelationshipMgms" asp-action="Index">Back to List</a>
+</div>
+

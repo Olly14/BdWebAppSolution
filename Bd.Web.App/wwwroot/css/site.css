@@ -35,3 +35,15 @@ body {
         display: none;
     }
 }
+
+/* Custom classes 
+-------------------------------------------------- */
+
+.customError {
+    color: lightpink
+}
+
+.errorBox {
+    border-bottom-color: red;
+    color: lightpink
+}

@@ -8,17 +8,19 @@ using Bd.Web.App.HttpService;
 using Bd.Web.App.Masking;
 using Bd.Web.App.Models;
 using Bd.Web.App.WebApiClient;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bd.Web.App.Controllers
 {
+    [Authorize]
     public class OrdersController : Controller
     {
 
         private readonly string Base_Address = "Orders";
 
-        private readonly string OrderItems_By_OrderId = "Orders/GetOrderAndOrderItems";
+        private readonly string Orders_with_AppUser = "Orders/GetOrdersWithAppUsers";
 
         private readonly string OrdersList_Base_Address = "Orders/GetOrders";
 

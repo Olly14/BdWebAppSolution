@@ -2,7 +2,6 @@
 using Bd.Web.App.DtoModels;
 using Bd.Web.App.HttpService;
 using Bd.Web.App.Masking;
-using Bd.Web.App.Models;
 using Bd.Web.App.WebApiClient;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,9 +9,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Bd.Web.App.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Bd.Web.App.Controllers
 {
+    [Authorize]
     public class ProductsController : Controller
     {
         private const string Products_Base_Address = "Products";
@@ -61,17 +63,26 @@ namespace Bd.Web.App.Controllers
         // GET: Products/Create
         public ActionResult Create()
         {
-            return View();
+            var newProduct = new ProductViewModel();
+            return View("CreateEdit", newProduct);
         }
 
         // POST: Products/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<ActionResult> Create(ProductViewModel model)
         {
+            var postPath = string.Format("{0}{1}",
+                HttpClientProvider.HttpClient.BaseAddress, Products_Base_Address);
+            model.ProductId = Guid.NewGuid().ToString();
+
             try
             {
                 // TODO: Add insert logic here
+                if (ModelState.IsValid)
+                {
+                   await _appClient.PostAsync(postPath, _mapper.Map<ProductDto>(model));
+                }
 
                 return RedirectToAction(nameof(Index));
             }
@@ -84,7 +95,7 @@ namespace Bd.Web.App.Controllers
 
         [HttpGet]
         // GET: Products/Edit/5
-        public async Task<ActionResult> EditAsync(string id)
+        public async Task<ActionResult> Edit(string id)
         {
             var path = string.Format("{0}/{1}", Products_Base_Address,
                 GuidEncoder.Decode(id));
@@ -97,21 +108,29 @@ namespace Bd.Web.App.Controllers
         // POST: Products/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(ProductViewModel model)
+        public async Task<IActionResult> Edit(ProductViewModel model)
         {
+            model.ProductId = GuidEncoder.Decode(model.UriKey).ToString();
+            var path = string.Format("{0}/{1}", Products_Base_Address,
+                       model.ProductId);
+
             try
             {
                 // TODO: Add update logic here
                 if (ModelState.IsValid)
                 {
+                     await _appClient.PutAsync(path, 
+                        _mapper.Map<ProductDto>(model));
 
+                    //return RedirectToAction("Index");
                 }
 
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch(Exception ex)
             {
-                return View();
+                var errMsg = ex.Message;
+                return View("CreateEdit", model);
             }
         }
 

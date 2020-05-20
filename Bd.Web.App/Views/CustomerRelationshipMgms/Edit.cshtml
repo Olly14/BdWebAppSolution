@@ -1,0 +1,119 @@
+﻿@model Bd.Web.App.Models.AppUserViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Edit @Model.FirstName @Model.LastName</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            @Html.Hidden("UriKey")
+            @Html.Hidden("SubjectId")
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+            <label type="hidden"  asp-for="AppUserId" class="control-label"></label>
+            <input type="hidden"  asp-for="AppUserId" class="form-control" />
+            <span asp-validation-for="AppUserId" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label type="hidden"  asp-for="UriKey" class="control-label"></label>
+            <input type="hidden"  asp-for="UriKey" class="form-control" />
+            <span asp-validation-for="UriKey" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label type="hidden"  asp-for="SubjectId" class="control-label"></label>
+            <input type="hidden"  asp-for="SubjectId" class="form-control" />
+            <span asp-validation-for="SubjectId" class="text-danger"></span>
+        </div>
+            <div class="form-group">
+                <label asp-for="FirstName" class="control-label"></label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastName" class="control-label"></label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FirstLineOfAddress" class="control-label"></label>
+                <input asp-for="FirstLineOfAddress" class="form-control" />
+                <span asp-validation-for="FirstLineOfAddress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SecondLineOfAddress" class="control-label"></label>
+                <input asp-for="SecondLineOfAddress" class="form-control" />
+                <span asp-validation-for="SecondLineOfAddress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Town" class="control-label"></label>
+                <input asp-for="Town" class="form-control" />
+                <span asp-validation-for="Town" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PostCode" class="control-label"></label>
+                <input asp-for="PostCode" class="form-control" />
+                <span asp-validation-for="PostCode" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+            <label type="hidden"  asp-for="CountryId" class="control-label"></label>
+            <input type="hidden"  asp-for="CountryId" class="form-control" />
+            <span asp-validation-for="CountryId" class="text-danger"></span>
+        </div>
+            <div class="form-group">
+            <label type="hidden"  asp-for="CountryIdValue" class="control-label"></label>
+            <input type="hidden"  asp-for="CountryIdValue" class="form-control" />
+            <span asp-validation-for="CountryIdValue" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label type="hidden"  asp-for="GenderId" class="control-label"></label>
+            <input type="hidden"  asp-for="GenderId" class="form-control" />
+            <span asp-validation-for="GenderId" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label type="hidden"  asp-for="GenderIdValue" class="control-label"></label>
+            <input type="hidden"  asp-for="GenderIdValue" class="form-control" />
+            <span asp-validation-for="GenderIdValue" class="text-danger"></span>
+        </div>
+            <div class="form-group form-check">
+            <label type="hidden"  class="form-check-label">
+                <input type="hidden"  class="form-check-input" asp-for="IsDeleted" /> @Html.DisplayNameFor(model => model.IsDeleted)
+            </label>
+        </div>
+        <div class="form-group form-check">
+            <label type="hidden"  class="form-check-label">
+                <input type="hidden"  class="form-check-input" asp-for="IsBlocked" /> @Html.DisplayNameFor(model => model.IsBlocked)
+            </label>
+        </div>
+        <div class="form-group">
+            <label type="hidden"  asp-for="ModifierAppUserId" class="control-label"></label>
+            <input type="hidden"  asp-for="ModifierAppUserId" class="form-control" />
+            <span asp-validation-for="ModifierAppUserId" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label type="hidden"  asp-for="ModifiedDate" class="control-label"></label>
+            <input asp-for="ModifiedDate" class="form-control" />
+            <span asp-validation-for="ModifiedDate" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label type="hidden"  asp-for="DisplayName" class="control-label"></label>
+            <input type="hidden"  asp-for="DisplayName" class="form-control" />
+            <span asp-validation-for="DisplayName" class="text-danger"></span>
+        </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index" class="btn btn-primary">Back to List</a>
+</div>
+

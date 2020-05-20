@@ -70,8 +70,8 @@ namespace Bd.Web.App.WebApiClients
                 new HttpRequestMessage(HttpMethod.Get, $"{uri}");
             //message.Headers.Authorization = new AuthenticationHeaderValue("Bearer", await GetAccessTokenAsync());
 
-
-
+            try
+            {
                 var response = await _httpClient.SendAsync(message);
 
                 if (response != null && response.IsSuccessStatusCode)
@@ -88,6 +88,14 @@ namespace Bd.Web.App.WebApiClients
                     listOfJsonT = JsonConvert.DeserializeObject<ICollection<T>>(jsonRes);
                     return listOfJsonT;
                 }
+            }
+            catch (Exception ex)
+            {
+                var errMsg = ex.Message;
+                throw;
+            }
+
+
 
 
 
@@ -116,15 +124,23 @@ namespace Bd.Web.App.WebApiClients
             // message.Headers.Authorization = new AuthenticationHeaderValue("Bearer", await GetAccessTokenAsync());
 
 
-
-            var responseA = await _httpClient.SendAsync(message);
-
-            if (responseA != null && responseA.IsSuccessStatusCode)
+            try
             {
-                var jsonString = await responseA.Content.ReadAsStringAsync();
-                var result = JsonConvert.DeserializeObject<T>(jsonString);
-                return result;
+                var responseA = await _httpClient.SendAsync(message);
+
+                if (responseA != null && responseA.IsSuccessStatusCode)
+                {
+                    var jsonString = await responseA.Content.ReadAsStringAsync();
+                    var result = JsonConvert.DeserializeObject<T>(jsonString);
+                    return result;
+                }
             }
+            catch (Exception ex)
+            {
+                var errorMsg = ex.Message;
+                throw;
+            }
+
 
             //TODO: Fix the error 
             //HandleApiError(responseA);
@@ -132,9 +148,32 @@ namespace Bd.Web.App.WebApiClients
 
         }
 
-        public Task PutAsync<T>(string uri, T updatedItem)
+        public async Task PutAsync<T>(string uri, T updatedItem)
         {
-            throw new NotImplementedException();
+            var message =
+                new HttpRequestMessage(HttpMethod.Put, $"{ _httpClient.BaseAddress}{uri}")
+                {
+                    Content = new StringContent(JsonConvert.SerializeObject(updatedItem), Encoding.UTF8,
+                        "application/json")
+                };
+            //message.Headers.Authorization = new AuthenticationHeaderValue("Bearer", await GetAccessTokenAsync());
+
+
+
+            var response = await _httpClient.SendAsync(message);
+
+            if (response != null && response.IsSuccessStatusCode)
+            {
+                var result = await response.Content.ReadAsStringAsync();
+                //return default;
+            }
+            else
+            {
+
+                HandleApiError(response);
+                //return default;
+            }
+
         }
 
 
