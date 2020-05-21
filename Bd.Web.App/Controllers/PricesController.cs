@@ -20,6 +20,7 @@ namespace Bd.Web.App.Controllers
         private const string Base_Address = "Prices";
         private const string Post_Address = "Prices/PostPrices";
         private const string AlternatePost_Address = "Prices/GetPricesCreated";
+        private const string AlternatePut_Address = "Prices/GetPricesUpdated";
 
 
 
@@ -125,25 +126,33 @@ namespace Bd.Web.App.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(PricesViewModel model)
         {
-            var path = string.Format("{0}{1}/{2}",
-                HttpClientProvider.HttpClient.BaseAddress, Base_Address, GuidEncoder.Decode(model.UriKey));
+            var path = string.Format("{0}/{1}",
+               Base_Address, GuidEncoder.Decode(model.UriKey));
             try
             {
                 // TODO: Add insert logic here
                 if (ModelState.IsValid)
                 {
-                    model.PricesId = GuidEncoder.Decode(model.UriKey).ToString();
-                    await _apiClient.PutAsync<PricesDto>(path,
-                        _mapper.Map<PricesDto>(model));
+
+                    var pathUpdate = string.Format("{0}/{1}/{2}",
+                            AlternatePut_Address, GuidEncoder.Decode(model.UriKey), model.Price);
+
+
+                    //model.PricesId = GuidEncoder.Decode(model.UriKey).ToString();
+                    //await _apiClient.PutAsync(path,
+                    //    _mapper.Map<PricesDto>(model));
+
+                    await _apiClient.GetAsync<PricesDto>(pathUpdate);
+
                     return RedirectToAction(nameof(Index));
                 }
 
-                return View();
+                return View("CreateEdit", model);
             }
             catch (Exception ex)
             {
                 var errMsg = ex.Message;
-                return View();
+                return View("CreateEdit", model);
             }
         }
 

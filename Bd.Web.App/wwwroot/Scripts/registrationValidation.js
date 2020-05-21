@@ -13,7 +13,7 @@
 
         if ($('#EmailInputId').val().length <= 0) {
             $('#EmailInputId').addClass("errorBox")
-            $('#EmailInputErrorId').show();
+            $('#EmailInputError').show();
             emailInputIsValid = false;
         } else {
             emailInputIsValid = true;

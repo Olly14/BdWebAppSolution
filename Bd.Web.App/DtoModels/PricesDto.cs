@@ -9,8 +9,6 @@ namespace Bd.Web.App.DtoModels
     {
         public string PricesId { get; set; }
 
-        //public string ProductId { get; set; }
-
         public string Type { get; set; }
 
         public string Price { get; set; }
